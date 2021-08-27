@@ -8,8 +8,10 @@
     "moduleResolution": "node",
     "paths": {
       "api/*": ["website/api/*"],
+      "assets/*": ["website/assets/*"],
       "components/*": ["website/components/*"],
       "config/*": ["website/config/*"],
+      "layouts/*": ["website/layouts/*"],
       "pages/*": ["website/pages/*"],
       "utils/*": ["website/utils/*"]
     },
