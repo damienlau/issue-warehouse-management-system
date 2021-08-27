@@ -1,0 +1,17 @@
+:root {
+  // Colors
+  each(@navy-colors, {
+    --color-navy-@{key}: @value;
+  });
+
+  each(@theme-colors, {
+    --color-@{key}: @value;
+  });
+
+  // Sizing
+  each(@size, {
+    @computed: (@value/16rem);
+
+    --size-@{value}: @computed;
+  });
+}

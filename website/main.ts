@@ -1,7 +1,7 @@
 import { createApp } from "vue";
 import App from "./App";
-import "./mock";
 import "./less/index.less";
+import "./mock";
 
 const app = createApp(App);
 

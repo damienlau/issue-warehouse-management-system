@@ -1,5 +1,6 @@
 import { defineComponent } from "vue";
 import { findUserData } from "api/user";
+import { Button } from "ant-design-vue";
 
 export default defineComponent({
   setup() {
@@ -12,7 +13,9 @@ export default defineComponent({
     return () => (
       <>
         <h1>模拟数据请求</h1>
-        <button onClick={handleClick}>点击发起请求</button>
+        <Button type="primary" onClick={handleClick}>
+          点击发起请求
+        </Button>
       </>
     );
   },
