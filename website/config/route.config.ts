@@ -17,7 +17,13 @@ const routesConfig = [
         name: "Sandbox",
         path: "sandbox",
         meta: { label: "沙盒环境" },
-        component: () => import("pages/sandbox"),
+        component: RouterView,
+        children: [
+          {
+            path: "",
+            component: () => import("pages/sandbox"),
+          },
+        ],
       },
       {
         name: "User",
@@ -38,14 +44,35 @@ const routesConfig = [
         path: "warehouse",
         meta: { label: "应急仓库", navigator: true },
         component: RouterView,
-        children: [],
+        children: [
+          {
+            name: "Material",
+            path: "material",
+            meta: { label: "仓库" },
+            component: () => import("pages/warehouse/material"),
+          },
+          {
+            name: "Record",
+            path: "record",
+            meta: { label: "借还记录" },
+            component: () => import("pages/warehouse/record"),
+          },
+          {
+            name: "Shortcut",
+            path: "shortcut",
+            meta: { label: "一键操作" },
+            component: () => import("pages/warehouse/shortcut"),
+          },
+          {
+            name: "Scanner",
+            path: "scanner",
+            meta: { label: "出/归仓扫描" },
+            component: () => import("pages/warehouse/scanner"),
+          },
+        ],
       },
     ],
   },
 ];
-
-// 开发模式下增加沙盒环境
-if (import.meta.env.MODE === "development") {
-}
 
 export default routesConfig;
