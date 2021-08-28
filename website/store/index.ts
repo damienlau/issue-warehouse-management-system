@@ -1,9 +1,15 @@
 import { createStore } from "vuex";
 
 export default createStore({
-  state: () => ({}),
+  state: () => ({
+    spinning: false,
+  }),
   getters: {},
-  mutations: {},
+  mutations: {
+    SET_SPINNING: (state) => {
+      state.spinning = !state.spinning;
+    },
+  },
   actions: {},
   modules: {},
 });
