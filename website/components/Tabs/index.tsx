@@ -3,15 +3,18 @@ import { Badge, TabPane, Tabs } from "ant-design-vue";
 
 export default defineComponent({
   name: "Tabs",
-  emits: ["click"],
+  emits: {
+    click: (payload: string | number) => {
+      return true;
+    },
+  },
   props: {
     center: { type: Boolean, required: false, default: false },
-    columns: { type: Array, required: true },
+    columns: { type: Object, required: true },
   },
-  emits: ["click"],
   setup(props, { slots, emit }) {
     const { center, columns } = toRefs(props);
-    const tabActiveKey = ref(columns.value[0].key);
+    const tabActiveKey = ref<string | number>(columns.value[0].key);
     const tabNavbarCenterClasses = computed(() => {
       return {
         "ant-tabs-nav-center h-full dark:bg-navy-4 rounded": center.value,
@@ -34,20 +37,26 @@ export default defineComponent({
       >
         {{
           default: () => {
-            return columns.value.map((row) => {
-              return (
-                <TabPane key={row.key}>
-                  {{
-                    default: () => slots.default?.(),
-                    tab: () => (
-                      <Badge count={22} overflowCount={999} offset={[16, 0]}>
-                        {row.label}
-                      </Badge>
-                    ),
-                  }}
-                </TabPane>
-              );
-            });
+            return columns.value.map(
+              (row: { label: string; key: string; count?: number }) => {
+                return (
+                  <TabPane key={row.key}>
+                    {{
+                      default: () => slots.default?.(),
+                      tab: () => (
+                        <Badge
+                          count={row.count}
+                          overflowCount={999}
+                          offset={[16, 0]}
+                        >
+                          {row.label}
+                        </Badge>
+                      ),
+                    }}
+                  </TabPane>
+                );
+              }
+            );
           },
           tabBarExtraContent: () => slots.extra?.(),
         }}

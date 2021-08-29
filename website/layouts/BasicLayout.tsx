@@ -13,10 +13,9 @@ export default defineComponent({
       <>
         <header class="h-72 px-32 dark:bg-navy-3"></header>
         <Spin
-          delay={666}
+          delay={233}
           wrapperClassName="flex-auto"
           spinning={spinning.value}
-          size="large"
         >
           <main class="h-full p-16">
             <RouterView />
