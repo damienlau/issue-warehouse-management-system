@@ -9,7 +9,6 @@ enum MessageStatus {
 
 Message.config({
   top: `var(--size-88)`,
-  duration: 0,
   maxCount: 1,
 });
 
