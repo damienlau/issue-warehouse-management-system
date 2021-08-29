@@ -1,3 +1,6 @@
+// Colors
+
+// less-docs-start color-variables
 @primary-color: @primary;
 @info-color: @primary-color;
 @success-color: @success;
@@ -6,7 +9,10 @@
 @highlight-color: @danger;
 @warning-color: @warning;
 
-@border-radius-base: var(--size-4);
+@text-color: fade(@white, 90%);
+@text-color-secondary: fade(@white, 70%);
+@heading-color: @text-color;
+// less-docs-end color-variables
 
 // Background
 
@@ -17,7 +23,14 @@
 @component-background: @navy-colors[1];
 // less-docs-end background-variables
 
-// Message
+// Border
 
-// less-docs-start message-variables
-// less-docs-end message-variables
+// less-docs-start border-variables
+@border-radius-base: var(--size-4);
+// less-docs-end border-variables
+
+// Tabs
+
+// less-docs-start tabs-variables
+@tabs-bar-margin: 0;
+// less-docs-end tabs-variables
