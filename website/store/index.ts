@@ -1,5 +1,4 @@
-import { InjectionKey } from "vue";
-import { createStore, useStore as baseUseStore, Store } from "vuex";
+import { createStore } from "vuex";
 
 const state = () => ({
   // 用于页面和区块的加载中状态
@@ -16,16 +15,12 @@ const mutations = {
   },
 };
 
-export interface State {
-  spinning: boolean;
-}
-export const key: InjectionKey<Store<State>> = Symbol();
-export const store = createStore<State>({
+const modules = {};
+
+export const store = createStore({
   state,
   getters,
   actions,
   mutations,
+  modules,
 });
-export function useStore() {
-  return baseUseStore(key);
-}
