@@ -38,7 +38,7 @@ export default defineComponent({
         </header>
         <Spin
           delay={233}
-          wrapperClassName="flex-auto"
+          wrapperClassName="flex-auto overflow-hidden"
           spinning={spinning.value}
         >
           <main class="h-full p-16">
