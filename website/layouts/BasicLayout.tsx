@@ -30,6 +30,7 @@ export default defineComponent({
       <>
         <header class="h-72 px-32 dark:bg-navy-3">
           <Menu
+            center
             class="h-72 leading-72"
             columns={menuColumns.value}
             onChange={handleChange}

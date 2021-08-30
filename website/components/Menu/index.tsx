@@ -1,6 +1,5 @@
-import { defineComponent, onMounted, ref } from "vue";
+import { computed, defineComponent, onMounted, ref } from "vue";
 import { Badge, Menu, MenuItem } from "ant-design-vue";
-import { menuProps } from "ant-design-vue/lib/menu/src/Menu";
 
 export interface MenuItemProps {
   label: string;
@@ -17,14 +16,18 @@ export interface MenuEventProps {
 export default defineComponent({
   name: "Menu",
   props: {
-    columns: {
-      type: Object,
-      required: true,
-    },
+    center: { type: Boolean, required: false, default: false },
+    columns: { type: Object, required: true },
   },
   emits: ["change"],
   setup(props, { slots, emit }) {
     const menuActiveKey = ref<string[]>(Array.of(props.columns[0].key));
+    const menuCenterClasses = computed(() => {
+      return {
+        "dark:bg-transparent border-none": true,
+        "flex flex-row justify-center": props.center,
+      };
+    });
 
     const handleClick = (options?: MenuEventProps) => {
       if (options?.keyPath) {
@@ -38,7 +41,7 @@ export default defineComponent({
     });
     return () => (
       <Menu
-        class="dark:bg-transparent border-none"
+        class={menuCenterClasses.value}
         mode="horizontal"
         selectedKeys={menuActiveKey.value}
         onClick={handleClick}

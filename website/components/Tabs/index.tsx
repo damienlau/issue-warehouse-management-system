@@ -9,16 +9,16 @@ export interface TabPaneProps {
 
 export default defineComponent({
   name: "Tabs",
-  emits: ["click"],
   props: {
     center: { type: Boolean, required: false, default: false },
     columns: { type: Object, required: true },
   },
+  emits: ["click"],
   setup(props, { slots, emit }) {
     const tabActiveKey = ref<string | number>(props.columns[0].key);
     const tabNavbarCenterClasses = computed(() => {
       return {
-        "ant-tabs-nav-center h-full dark:bg-navy-4 rounded": props.center,
+        "ant-tabs-nav-center h-full rounded": props.center,
       };
     });
 
