@@ -23,5 +23,9 @@ export default defineConfig({
       utils: resolved(__dirname, "website/utils"),
     },
   },
-  server: { open: true },
+  server: {
+    open: true,
+    host: "127.0.0.1",
+    port: 2333,
+  },
 });
