@@ -13,7 +13,7 @@ const shortcutRequestUrl = {
   update: "batchPending/update",
 };
 
-export const addSpecifiedShortcutData = (parameter: any) => {
+export const addSpecifiedShortcutData = (parameter?: any) => {
   return request.post(shortcutRequestUrl.add, parameter).then((response) => {
     return new Promise((reslove) => {
       reslove(response);
@@ -21,7 +21,7 @@ export const addSpecifiedShortcutData = (parameter: any) => {
   });
 };
 
-export const deleteSpecifiedShortcutData = (parameter: any) => {
+export const deleteSpecifiedShortcutData = (parameter?: any) => {
   return request.post(shortcutRequestUrl.delete, parameter).then((response) => {
     return new Promise((reslove) => {
       reslove(response);
@@ -29,7 +29,7 @@ export const deleteSpecifiedShortcutData = (parameter: any) => {
   });
 };
 
-export const findSpecifiedShortcutData = (parameter: any) => {
+export const findSpecifiedShortcutData = (parameter?: any) => {
   return request
     .get(shortcutRequestUrl.find, { params: parameter })
     .then((response) => {
@@ -39,17 +39,15 @@ export const findSpecifiedShortcutData = (parameter: any) => {
     });
 };
 
-export const findShortcutCountData = (parameter: any) => {
-  return request
-    .get(shortcutRequestUrl.findCount, { params: parameter })
-    .then((response) => {
-      return new Promise((reslove) => {
-        reslove(response);
-      });
+export const findShortcutCountData = () => {
+  return request.get(shortcutRequestUrl.findCount).then((response) => {
+    return new Promise((reslove) => {
+      reslove(response);
     });
+  });
 };
 
-export const updateSpecifiedShortcutData = (parameter: any) => {
+export const updateSpecifiedShortcutData = (parameter?: any) => {
   return request.post(shortcutRequestUrl.update, parameter).then((response) => {
     return new Promise((reslove) => {
       reslove(response);
