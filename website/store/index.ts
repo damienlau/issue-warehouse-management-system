@@ -1,6 +1,7 @@
 import { MenuItemProps } from "components/Menu";
 import { RouteLocationNormalizedLoaded, RouteRecordRaw } from "vue-router";
 import { createStore } from "vuex";
+import warehouse from "./modules/warehouse";
 
 const state = () => ({
   // 用于页面和区块的加载中状态
@@ -40,7 +41,7 @@ const mutations = {
   },
 };
 
-const modules = {};
+const modules = { warehouse };
 
 export interface State {
   spinning: boolean;

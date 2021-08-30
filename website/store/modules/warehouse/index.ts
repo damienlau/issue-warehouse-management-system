@@ -1,4 +1,4 @@
-import shortcutModule from "./shortcut";
+import shortcut from "./shortcut";
 
 const state = () => ({});
 
@@ -8,7 +8,7 @@ const actions = {};
 
 const mutations = {};
 
-const modules = { shortcutModule };
+const modules = { shortcut };
 
 export default {
   namespaced: true,
