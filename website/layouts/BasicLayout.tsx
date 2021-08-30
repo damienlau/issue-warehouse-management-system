@@ -1,6 +1,6 @@
 import { computed, defineComponent, ref } from "vue";
 import { RouterView } from "vue-router";
-import { useStore } from "vuex";
+import { useStore } from "store/index";
 import { Spin } from "ant-design-vue";
 
 export default defineComponent({
