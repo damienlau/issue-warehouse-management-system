@@ -1,6 +1,7 @@
 import { computed, defineComponent, ref } from "vue";
-import { Button, Image, ImagePreviewGroup, Space } from "ant-design-vue";
+import { Button, Image, ImagePreviewGroup, Modal, Space } from "ant-design-vue";
 import { useStore } from "vuex";
+import Icon from "components/Icon";
 import List from "components/List";
 import Tabs, { TabPaneProps } from "components/Tabs";
 
@@ -34,6 +35,13 @@ export default defineComponent({
       });
     };
 
+    const handleDelete = () => {
+      Modal.confirm({
+        centered: true,
+        title: `确定要清空${tabExtraOptions.value.label}吗？`,
+      });
+    };
+
     return () => (
       <Tabs
         class="dark:bg-navy-4"
@@ -44,7 +52,7 @@ export default defineComponent({
           extra: () => {
             return (
               <Space>
-                <Button danger ghost>
+                <Button danger ghost onClick={handleDelete}>
                   清空{tabExtraOptions.value.label}
                 </Button>
                 <Button type="primary">全部借出</Button>
@@ -60,7 +68,7 @@ export default defineComponent({
                       {/* Card Header Start */}
                       <div class="flex flex-row items-center justify-between py-8 border-b border-navy-1">
                         {/* title */}
-                        <h3 class="flex flex-row text-16 px-16 overflow-auto">
+                        <h3 class="flex flex-row text-16 pl-16 overflow-auto">
                           <span class="truncate">{item.label}</span>
                           {item.quantity && (
                             <span
@@ -77,6 +85,7 @@ export default defineComponent({
                         {/* extra */}
                         {/* <button class="text-14 text-danger flex-shrink-0"></button> */}
                         <Button danger type="text">
+                          <Icon class="align-baseline" type="delete" />
                           移出
                         </Button>
                       </div>
