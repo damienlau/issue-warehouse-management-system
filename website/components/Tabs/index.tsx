@@ -2,8 +2,8 @@ import { computed, defineComponent, onMounted, ref } from "vue";
 import { Badge, TabPane, Tabs } from "ant-design-vue";
 
 export interface TabPaneProps {
-  label: string;
-  key: string;
+  label?: string;
+  key?: string;
   count?: number;
 }
 
@@ -25,11 +25,11 @@ export default defineComponent({
     const handleClick = (activeKey = tabActiveKey.value) => {
       let selectedTabPane: TabPaneProps = props.columns.find(
         (row: TabPaneProps) => {
-          return row.key === tabActiveKey.value;
+          return row.key === activeKey;
         }
       );
 
-      emit("click", { key: activeKey, item: selectedTabPane });
+      emit("click", selectedTabPane);
     };
 
     onMounted(() => {
