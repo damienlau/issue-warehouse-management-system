@@ -76,7 +76,7 @@ Mock.mock(shortcutMockRequestUrl.find, "get", {
             },
           ],
         },
-        "warehouseBoxInfo|1-10": {
+        warehouseBoxInfo: {
           createMan: "@cname",
           createTime: "@date(yyyy-MM-dd HH:mm:ss)",
           id: "@natural",

@@ -1,8 +1,8 @@
 import { computed, defineComponent, ref } from "vue";
-import { Button, Space } from "ant-design-vue";
+import { Button, Image, ImagePreviewGroup, Space } from "ant-design-vue";
 import { useStore } from "vuex";
 import List from "components/List";
-import Tabs from "components/Tabs";
+import Tabs, { TabPaneProps } from "components/Tabs";
 
 export default defineComponent({
   setup() {
@@ -24,9 +24,11 @@ export default defineComponent({
         count: computed(() => store.state.warehouse.shortcut.total.maintain),
       },
     ]);
+    const tabExtraOptions = ref<TabPaneProps>({});
     const cardListsData = ref({});
 
-    const handleClickTabPane = (active: object) => {
+    const handleClickTabPane = (tabPane: TabPaneProps) => {
+      tabExtraOptions.value = tabPane;
       store.dispatch("warehouse/shortcut/getLists").then((response) => {
         cardListsData.value = response;
       });
@@ -43,7 +45,7 @@ export default defineComponent({
             return (
               <Space>
                 <Button danger ghost>
-                  清空借货清单
+                  清空{tabExtraOptions.value.label}
                 </Button>
                 <Button type="primary">全部借出</Button>
               </Space>
@@ -52,15 +54,58 @@ export default defineComponent({
           default: () => (
             <List grid={5} class="h-full" dataSource={cardListsData.value}>
               {{
-                card: (item) => (
+                card: ({ item, index }) => (
                   <>
-                    {console.log(item)}
-                    <p>
-                      <span>{item.item.createMan}</span>
-                    </p>
-                    <p>
-                      <span>{item.index}</span>
-                    </p>
+                    <section class="dark:bg-navy-2 dark:hover:bg-navy-3 rounded">
+                      {/* Card Header Start */}
+                      <div class="flex flex-row items-center justify-between py-8 border-b border-navy-1">
+                        {/* title */}
+                        <h3 class="flex flex-row text-16 px-16 overflow-auto">
+                          <span class="truncate">{item.label}</span>
+                          {item.quantity && (
+                            <span
+                              class={
+                                item.quantity.total == item.quantity.remain
+                                  ? "text-success"
+                                  : "text-danger"
+                              }
+                            >
+                              ({item.quantity.remain}/{item.quantity.total})
+                            </span>
+                          )}
+                        </h3>
+                        {/* extra */}
+                        {/* <button class="text-14 text-danger flex-shrink-0"></button> */}
+                        <Button danger type="text">
+                          移出
+                        </Button>
+                      </div>
+                      {/* Card Header End */}
+
+                      {/* Card Body Start */}
+                      <section class="flex flex-row p-16">
+                        {/* thumbnail */}
+                        <div>
+                          <ImagePreviewGroup>
+                            {item.thumbnail.map((image, key) => {
+                              return (
+                                <div v-show={!key}>
+                                  <Image
+                                    class="w-full h-full object-cover rounded"
+                                    src={image.fileUrl}
+                                    fallback="/icon_empty_search.png"
+                                    width={108}
+                                    height={108}
+                                  ></Image>
+                                </div>
+                              );
+                            })}
+                          </ImagePreviewGroup>
+                        </div>
+                        {/* descriptions */}
+                      </section>
+                      {/* Card Body End */}
+                    </section>
                   </>
                 ),
               }}
