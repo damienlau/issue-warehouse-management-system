@@ -13,6 +13,21 @@ const shortcutRequestUrl = {
   update: "batchPending/update",
 };
 
+interface ShortcutRequestParameter {
+  id: string | number;
+}
+
+interface ShortcutResponseParameter {
+  totalNum: string | number;
+  baoYangNum: string | number;
+  weiXiuNum: string | number;
+  outNum: string | number;
+}
+
+export type ShortcutParameterProps =
+  | ShortcutRequestParameter[]
+  | ShortcutResponseParameter;
+
 export const addSpecifiedShortcutData = (parameter?: any) => {
   return request.post(shortcutRequestUrl.add, parameter).then((response) => {
     return new Promise((reslove) => {
@@ -21,7 +36,9 @@ export const addSpecifiedShortcutData = (parameter?: any) => {
   });
 };
 
-export const deleteSpecifiedShortcutData = (parameter?: any) => {
+export const deleteSpecifiedShortcutData = (
+  parameter: ShortcutParameterProps
+) => {
   return request.post(shortcutRequestUrl.delete, parameter).then((response) => {
     return new Promise((reslove) => {
       reslove(response);

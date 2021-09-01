@@ -1,9 +1,27 @@
 import { computed, defineComponent, ref } from "vue";
-import { Button, Image, ImagePreviewGroup, Modal, Space } from "ant-design-vue";
+import {
+  Button,
+  Image,
+  ImagePreviewGroup,
+  Modal,
+  Popconfirm,
+  Space,
+} from "ant-design-vue";
 import { useStore } from "vuex";
 import Icon from "components/Icon";
 import List from "components/List";
 import Tabs, { TabPaneProps } from "components/Tabs";
+
+export interface Data {
+  pagination?: {
+    current?: number;
+    pageSize?: number;
+    total?: number;
+  };
+  data?: {
+    [propertyName: string]: any;
+  };
+}
 
 export default defineComponent({
   setup() {
@@ -12,34 +30,49 @@ export default defineComponent({
       {
         label: "借货清单",
         key: "1",
+        alias: "借出",
         count: computed(() => store.state.warehouse.shortcut.total.lend),
       },
       {
         label: "维修清单",
         key: "2",
+        alias: "维修",
         count: computed(() => store.state.warehouse.shortcut.total.repair),
       },
       {
         label: "保养清单",
         key: "3",
+        alias: "保养",
         count: computed(() => store.state.warehouse.shortcut.total.maintain),
       },
     ]);
     const tabExtraOptions = ref<TabPaneProps>({});
-    const cardListsData = ref({});
+    const cardListsData = ref<Data>({});
 
-    const handleClickTabPane = (tabPane: TabPaneProps) => {
-      tabExtraOptions.value = tabPane;
+    const handleClickTabPane = ({ item }) => {
+      tabExtraOptions.value = item;
       store.dispatch("warehouse/shortcut/getLists").then((response) => {
         cardListsData.value = response;
       });
     };
 
-    const handleDelete = () => {
+    const handleConfirmOpertaion = () => {
       Modal.confirm({
         centered: true,
+        icon: <Icon type="shanjian" />,
         title: `确定要清空${tabExtraOptions.value.label}吗？`,
+        content: `点击清空${tabExtraOptions.value.label}后，该清单内的物资将全部移出`,
+        cancelText: "取消",
+        okText: `清空${tabExtraOptions.value.label}`,
+        onOk: () => {
+          handleDelete();
+        },
       });
+    };
+
+    const handleDelete = (selected = cardListsData.value?.data) => {
+      console.log(selected);
+      store.dispatch("warehouse/shortcut/removeLists");
     };
 
     return () => (
@@ -52,10 +85,12 @@ export default defineComponent({
           extra: () => {
             return (
               <Space>
-                <Button danger ghost onClick={handleDelete}>
+                <Button danger ghost onClick={handleConfirmOpertaion}>
                   清空{tabExtraOptions.value.label}
                 </Button>
-                <Button type="primary">全部借出</Button>
+                <Button type="primary">
+                  全部{tabExtraOptions.value.alias}
+                </Button>
               </Space>
             );
           },
@@ -83,11 +118,21 @@ export default defineComponent({
                           )}
                         </h3>
                         {/* extra */}
-                        {/* <button class="text-14 text-danger flex-shrink-0"></button> */}
-                        <Button danger type="text">
-                          <Icon class="align-baseline" type="delete" />
-                          移出
-                        </Button>
+                        <Popconfirm
+                          title={`移出${item.label}?`}
+                          placement="bottomRight"
+                          onConfirm={() => handleDelete(item)}
+                        >
+                          {{
+                            icon: () => <Icon type="shanjian" />,
+                            default: () => (
+                              <Button danger type="text">
+                                <Icon class="align-baseline" type="delete" />
+                                移出
+                              </Button>
+                            ),
+                          }}
+                        </Popconfirm>
                       </div>
                       {/* Card Header End */}
 

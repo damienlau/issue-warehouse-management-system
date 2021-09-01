@@ -1,7 +1,10 @@
 import {
+  deleteSpecifiedShortcutData,
   findShortcutCountData,
   findSpecifiedShortcutData,
+  ShortcutParameterProps,
 } from "api/warehouse/shortcut";
+import { Commit, Dispatch, Store } from "vuex";
 
 const state = () => ({
   total: { all: 0, maintain: 0, repair: 0, lend: 0 },
@@ -11,14 +14,14 @@ const getters = {};
 
 const actions = {
   // 获取待操作清单数量
-  getTotals: ({ commit }) => {
+  getTotals: ({ commit }: Store<Commit>) => {
     return new Promise<void>((reslove) => {
-      findShortcutCountData().then((count) => {
+      findShortcutCountData().then((total: ShortcutParameterProps) => {
         commit("SET_TOTAL", {
-          all: count.totalNum,
-          maintain: count.baoYangNum,
-          repair: count.weiXiuNum,
-          lend: count.outNum,
+          all: total.totalNum,
+          maintain: total.baoYangNum,
+          repair: total.weiXiuNum,
+          lend: total.outNum,
         });
         reslove();
       });
@@ -26,17 +29,17 @@ const actions = {
   },
 
   // 获取待操作清单列表
-  getLists: ({ dispatch }) => {
+  getLists: ({ dispatch }: Store<Dispatch>) => {
     return new Promise((reslove) => {
       dispatch("getTotals").then(() => {
-        findSpecifiedShortcutData().then((response) => {
+        findSpecifiedShortcutData().then((response: any) => {
           reslove({
             pagination: {
               current: response.currentPage,
               total: response.totalNum,
               pageSize: response.pageSize,
             },
-            data: response.content.map((lists) => {
+            data: response.content.map((lists: any) => {
               switch (lists.resourceType) {
                 case MaterialType.box:
                   return {
@@ -65,10 +68,20 @@ const actions = {
       });
     });
   },
+
+  // 批量删除待操作清单列表
+  removeLists: (
+    { dispatch }: Store<Dispatch>,
+    deleteLists: ShortcutParameterProps
+  ) => {
+    deleteSpecifiedShortcutData(deleteLists).then((response: any) => {
+      dispatch("getLists");
+    });
+  },
 };
 
 const mutations = {
-  SET_TOTAL: (state: State, totals: State) => {
+  SET_TOTAL: (state: Store<State>, totals: State) => {
     state.total = totals;
   },
 };
@@ -79,7 +92,12 @@ export enum MaterialType {
 }
 
 export interface State {
-  total: { all: number; maintain: number; repair: number; lend: number };
+  total: {
+    all?: number;
+    maintain: number;
+    repair: number;
+    lend: number;
+  };
 }
 
 export default {
