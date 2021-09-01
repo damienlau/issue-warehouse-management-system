@@ -5,6 +5,7 @@ export interface TabPaneProps {
   label?: string;
   key?: string;
   count?: number;
+  [propertyName: string]: any;
 }
 
 export default defineComponent({
@@ -29,7 +30,7 @@ export default defineComponent({
         }
       );
 
-      emit("click", selectedTabPane);
+      emit("click", { activeKey, item: selectedTabPane });
     };
 
     onMounted(() => {
@@ -41,7 +42,7 @@ export default defineComponent({
         class={tabNavbarCenterClasses.value}
         defaultActiveKey={tabActiveKey.value}
         animated={false}
-        onTabClick={handleClick}
+        onChange={handleClick}
       >
         {{
           default: () => {
